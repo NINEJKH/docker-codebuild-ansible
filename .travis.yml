@@ -1,0 +1,24 @@
+sudo: required
+
+language: minimal
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_REPO: 9jkh/codebuild-ansible
+    # DOCKER_USERNAME
+    - secure: "DIp9rGjp+jARLojoCCnF5jAdOE7DlVFqpCIOJ9l1U/sv1sfqWFdaie+DpDDv/4wFU+dWZe47gpPGaCFtBKz7RELZWa5+ghNO0W7DLe748FZZ14BGr80HvTqF2V3pkzRyp2UNQ6bZdg44IQogKe/OekOC4bCh/ZzRmn1f4Wsrr28yuYRF01N0xQR69HtWx03C7CjiIsU6faaAsARXYsmgisAtw1dDT2RDb5d4k9Use5EVnPwNmN623oWBpOBDoGFXz/XiPurkfcDuMqel+h1H8hmAsjg1FnDiQt2lH7/EowqiXpZDxPdUoIrz1cph4HDxygnvPDhdbLNj3J2vCK6m8WG0+riu/uBv1MGdrBf6xdaoXAkHbeHsNEWhNrDMqJnUzxR9H4/Y2Xp8Tf43gz8lIN8KBB0x7Msgv8leG3X5kirJwcBoQiiqUJaQcwbUumXf9nn2IqOmeDA1HoXOAA9Z7L8vJ69c10EB9HKQNAk3uMbgRgj70gB7lkIdk0QOik6gDEhrFnb1bYABqDdx7DrFmMK2C4JiF5wK4ohRG2ba/gxnxH+leDBYGmu/sm8cK2a93qnY4EHb3Car1NKoLLdk9pCMbWXYIk90UFRDKeqX4wqLzLcyUVJmD68NKCwRuV2wXRfpzL1gkpqjt5jwrpkbZjlu71QI07Y7CxrWc1/u17k="
+    # DOCKER_PASSWORD
+    - secure: "ipvcObaPnJlggFkpoALLf2mfM3DR3w9pDxbbcNkPU5MwOGu7XWSVBOpPwxJxzck8sfSIC56kHH5NZRRyGux9210k6iUnnspLPzOX7Ox3UiH5PS8HmnQmiV1Klrl9iA2rOCsNo0Wq39y9MzFQcCZuL3LSGm+aBqLispa1gY7T7fuylO/bqqsTdAfBeZ4Neg7KqXapjG8slVNrGFI+BWsze7jxaYrEdO9I7MnQsg2+XX1DQ8JiiYWyfbvfX5SCGQ4kvhiiAg9oiqytP9HE4nESlRQcwVdJ9hfWvNPndt0kLeq1lWuALSfkgOr3eo2PtwYYbPtiLAGBVDq/PjEjBhH4zLn0j7BemKG86lrpJFJ/pyFFtO16uw4ZK9wu9iH+Ul5h6Ni2vNzqYMlrJX3PT/kx23LtK5iOpZ8Xz6GeafejrG5VQGdL1oREdazSPVOCYBN6gv3hTG+L3Areo1qSEJaRrHiRJinezdV7QyYNQx2BeQjfNzJzlVYfW/tA5/PoZko/vcMw9fkhD4Zfw8bPMZCCoJzwnFwqnsivnR+EIg7rqIpqNGdQrlUYUX7dJAPQs3KgwoCQ4swvgAltNZWxr/F1ocHbrP7yTq2RUOACi/Ug2JTaa23S2nwEhYeHVETp5hrm5QD6J5DRvvnVpOGf23sBtWhiC1Nj1DYdpvFr+GuAVLg="
+
+before_install:
+  - ./build.sh
+
+deploy:
+  provider: script
+  script: "./push.sh"
+  skip_cleanup: true
+  on:
+    branch: master
