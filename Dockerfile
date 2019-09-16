@@ -10,14 +10,15 @@
 # See the License for the specific language governing permissions and limitations under the License.
 #
 
-FROM debian:9-slim
+FROM debian:10-slim
 
 ENV DEBIAN_FRONTEND="noninteractive" \
     DOCKER_BUCKET="download.docker.com" \
-    DOCKER_VERSION="18.09.0" \
+    DOCKER_VERSION="19.03.2" \
     DOCKER_CHANNEL="stable" \
-    DOCKER_SHA256="08795696e852328d66753963249f4396af2295a7fe2847b839f7102e25e47cb9" \
-    DIND_COMMIT="3b5fac462d21ca164b3778647420016315289034"
+    DOCKER_SHA256="865038730c79ab48dfed1365ee7627606405c037f46c9ae17c5ec1f487da1375" \
+    DIND_COMMIT="37498f009d8bf25fbb6199e8ccd34bed84f2874b" \
+    TFENV_VERSION="1.0.1"
 
 # Install git, SSH, and other utilities
 RUN set -ex \
@@ -39,6 +40,7 @@ RUN set -ex \
         gcc \
         g++ \
         libffi-dev \
+        unzip \
     && mkdir ~/.ssh \
     && touch ~/.ssh/known_hosts \
     && ssh-keyscan -H github.com >> ~/.ssh/known_hosts \
@@ -74,6 +76,14 @@ RUN set -ex \
         ansible \
         requests \
         cffi
+
+RUN set -ex \
+    && cd /opt \
+    && wget "https://github.com/tfutils/tfenv/archive/v${TFENV_VERSION}.tar.gz" \
+    && tar xf "v${TFENV_VERSION}.tar.gz" \
+    && ln -sf "/opt/tfenv-${TFENV_VERSION}/bin/"* /usr/local/bin \
+    && tfenv install "$(tfenv list-remote | grep -v 0\.11\.15 | grep 0\.11\. | head -n1)" \
+    && tfenv install "$(tfenv list-remote | grep 0\.12\. | head -n1)"
 
 VOLUME /var/lib/docker
 
