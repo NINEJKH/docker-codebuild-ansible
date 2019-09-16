@@ -1,23 +1,18 @@
 #!/bin/sh
+
 set -e
 
-/usr/local/bin/dockerd \
-	--host=unix:///var/run/docker.sock \
-	--host=tcp://127.0.0.1:2375 \
-	--storage-driver=overlay2 &>/var/log/docker.log &
+set -- dockerd \
+		--host=unix:///var/run/docker.sock \
+		--host=tcp://0.0.0.0:2375
 
+if [ "$1" = 'dockerd' ]; then
+	# if we're running Docker, let's pipe through dind
+	# (and we'll run dind explicitly with "sh" since its shebang is /bin/bash)
+	set -- sh "$(which dind)" "$@"
 
-tries=0
-d_timeout=60
-until docker info >/dev/null 2>&1
-do
-	if [ "$tries" -gt "$d_timeout" ]; then
-                cat /var/log/docker.log
-		echo 'Timed out trying to connect to internal docker host.' >&2
-		exit 1
-	fi
-        tries=$(( $tries + 1 ))
-	sleep 1
-done
+	# explicitly remove Docker's default PID file to ensure that it can start properly if it was stopped uncleanly (and thus didn't clean up the PID file)
+	find /run /var/run -iname 'docker*.pid' -delete
+fi
 
-eval "$@"
+exec "${@}"
