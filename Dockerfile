@@ -24,7 +24,6 @@ RUN set -ex && \
       netcat-openbsd \
       openssh \
       openssl-dev \
-      perl-utils \
       pkgconf \
       python3-dev \
       ruby-bundler \
