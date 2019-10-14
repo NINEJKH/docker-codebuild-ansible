@@ -54,8 +54,8 @@ RUN set -ex && \
     wget "https://github.com/tfutils/tfenv/archive/v${tfenv_version}.tar.gz" && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
-    tfenv install "$(tfenv list-remote | grep -v 0\.11\.15 | grep 0\.11\. | head -n1)" && \
-    tfenv install "$(tfenv list-remote | grep 0\.12\. | head -n1)"
+    tfenv list-remote | grep 0\.11\. | grep -v '\(alpha\|beta\|rc\|0\.11\.15\)' | xargs -n1 tfenv install && \
+    tfenv list-remote | grep 0\.12\. | grep -v '\(alpha\|beta\|rc\)' | xargs -n1 tfenv install
 
 # Configure SSH
 COPY ssh_config ~/.ssh/config
