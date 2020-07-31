@@ -1,7 +1,7 @@
 # based-off alpine-3.10: https://github.com/docker-library/docker/blob/master/19.03/Dockerfile#L1
 FROM docker:19-dind
 
-ARG tfenv_version="1.0.1"
+ARG tfenv_version="2.0.0"
 
 VOLUME /var/lib/docker
 
@@ -26,6 +26,7 @@ RUN set -ex && \
       openssl-dev \
       pkgconf \
       python3-dev \
+      py3-pip \
       ruby-bundler \
       ruby-dev \
       ruby-json \
