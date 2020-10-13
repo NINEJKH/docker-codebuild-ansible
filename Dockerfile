@@ -56,7 +56,7 @@ RUN set -ex && \
     tar xf "v${tfenv_version}.tar.gz" && \
     ln -sf "/opt/tfenv-${tfenv_version}/bin/"* /usr/local/bin && \
     tfenv list-remote | grep 0\.11\. | grep -v '\(alpha\|beta\|rc\|0\.11\.15\)' | head -n5 | xargs -n1 tfenv install && \
-    tfenv list-remote | grep 0\.12\. | grep -v '\(alpha\|beta\|rc\)' | head -n5 | xargs -n1 tfenv install
+    tfenv list-remote | grep 0\.12\. | grep -v '\(alpha\|beta\|rc\)' | head -n5 | xargs -n1 tfenv install && \
     tfenv list-remote | grep 0\.13\. | grep -v '\(alpha\|beta\|rc\)' | head -n10 | xargs -n1 tfenv install
 
 # Configure SSH
